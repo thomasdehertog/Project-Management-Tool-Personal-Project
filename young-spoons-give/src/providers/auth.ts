@@ -6,18 +6,25 @@ export const authCredentials = {
   password: "demodemo",
 };
 
+type LoginParams = {
+  email: string;
+  password: string;
+};
+
 export const authProvider: AuthBindings = {
-  login: async ({ email }) => {
+  login: async (params: LoginParams) => {
+    const { email, password } = params;
+
     try {
       const { data } = await dataProvider.custom({
         url: API_URL,
         method: "post",
         headers: {},
         meta: {
-          variables: { email },
+          variables: { email, password },
           rawQuery: `
-            mutation Login($email: String!) {
-              login(loginInput: { email: $email }) {
+            mutation Login($email: String!, $password: String!) {
+              login(loginInput: { email: $email, password: $password }) {
                 accessToken
               }
             }
@@ -29,7 +36,7 @@ export const authProvider: AuthBindings = {
       
       return {
         success: true,
-        redirectTo: "/", // Changed from "/home" to "/"
+        redirectTo: "/",
       };
     } catch (e) {
       const error = e as Error;
@@ -80,7 +87,7 @@ export const authProvider: AuthBindings = {
 
       return {
         authenticated: true,
-        redirectTo: "/", // This is already correct
+        redirectTo: "/",
       };
     } catch (error) {
       return {
