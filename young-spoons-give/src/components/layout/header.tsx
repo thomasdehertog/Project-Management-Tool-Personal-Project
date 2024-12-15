@@ -1,12 +1,12 @@
 import React from 'react'
 import CurrentUser from './current-user'
 
-const Header = () => {
+export const Header = () => {
   return (
     <div>
-        <CurrentUser />
+      <CurrentUser />
     </div>
   )
 }
 
-export default Header
+// Remove the default export and use named export instead
